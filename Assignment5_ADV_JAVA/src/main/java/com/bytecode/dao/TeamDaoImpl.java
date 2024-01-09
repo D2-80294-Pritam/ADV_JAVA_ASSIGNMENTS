@@ -78,7 +78,27 @@ public class TeamDaoImpl implements TeamDao {
 		}
 		return team;
 	}
-	
+
+	@Override
+	public List<Team> getTeamsByMaxAgeMinWickets(Integer maxAge, Integer minWickets) {
+		List<Team> list = null;
+		Session session = getFactory().getCurrentSession();
+		String jpql = "select T from Team T where T.maxAge < :a and T.wicketsTaken > :b order by T.maxAge desc";
+		Transaction tx = session.beginTransaction();
+		try {
+			list = session.createQuery(jpql, Team.class)
+					.setParameter("a", maxAge)
+					.setParameter("b", minWickets)
+					.getResultList();
+			tx.commit();
+		}
+		catch (RuntimeException e) {
+			if (tx != null)
+				tx.rollback();
+			throw e;
+		}
+		return list;
+	}
 	
 
 }
