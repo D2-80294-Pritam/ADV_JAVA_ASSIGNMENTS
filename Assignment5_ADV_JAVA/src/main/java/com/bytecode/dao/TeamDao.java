@@ -9,4 +9,5 @@ public interface TeamDao {
 	String addNewTeam(Team team);
 	List<Team> displayTeamIdAbbreviation();
 	Team getTeamById(Long id);
+	List<Team> getTeamsByMaxAgeMinWickets(Integer maxAge, Integer minWickets);
 }
